@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>You're Not Alone — Mini Help App</title>
+  <meta name="description" content="A tiny, fast, static website to support people in emotional crisis. Immediate helplines in India, grounding tools, and steps to stay safe right now." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1220; --card:#121a2b; --ink:#f0f4ff; --muted:#b9c2df; --brand:#6ee7b7; --brand-2:#93c5fd; --warn:#fcd34d; --danger:#f87171;
+      --ring: 0 0 0 3px rgba(147,197,253,.35);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:radial-gradient(1200px 800px at 80% -10%, #1c2642 0%, #0b1220 60%), var(--bg);color:var(--ink);}
+    a{color:var(--brand-2)}
+    .wrap{max-width:920px;margin:0 auto;padding:24px}
+    .nav{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .badge{font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;background:rgba(147,197,253,.15);color:#dbeafe;border:1px solid rgba(147,197,253,.4);padding:6px 10px;border-radius:999px}
+    header.hero{border:1px solid rgba(148,163,184,.2);background:linear-gradient(145deg, rgba(20,30,48,.7), rgba(20,30,48,.35));backdrop-filter:saturate(140%) blur(6px); padding:22px;border-radius:20px; display:grid; gap:8px}
+    h1{margin:4px 0 6px;font-size:28px;line-height:1.15}
+    .sub{color:var(--muted);font-size:14px}
+    .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px}
+    @media(min-width:840px){.grid{grid-template-columns:1.2fr .8fr}}
+    .card{background:var(--card);border:1px solid rgba(148,163,184,.16);border-radius:20px;padding:18px}
+    .card h2{margin:0 0 10px;font-size:18px}
+    .btns{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 16px;border-radius:14px;font-weight:700;border:1px solid transparent;text-decoration:none;cursor:pointer;font-family:inherit;font-size:14px;}
+    .btn:focus{outline:none;box-shadow:var(--ring)}
+    .btn.primary{background:linear-gradient(180deg, #34d399, #10b981);color:#052e2b}
+    .btn.alt{background:linear-gradient(180deg, #bfdbfe, #93c5fd);color:#0a1c3a}
+    .btn.warn{background:linear-gradient(180deg, #fde68a, #fbbf24);color:#1f1504}
+    .btn.ghost{background:transparent;border-color:rgba(147,197,253,.35);color:#c7d2fe}
+    .helplist{display:grid;gap:10px}
+    .hl{display:flex;justify-content:space-between;gap:8px;align-items:center;background:#0e1628;border:1px solid rgba(147,197,253,.18);padding:12px;border-radius:14px}
+    .hl small{color:var(--muted)}
+    .row{display:grid;grid-template-columns:1fr;gap:12px}
+    @media(min-width:740px){.row{grid-template-columns:1fr 1fr}}
+    .list{margin:0;padding-left:18px}
+    .list li{margin:8px 0}
+    .footer{color:#9aa5c7;font-size:12px;opacity:.9;margin:14px 0}
+    .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#111827;color:#cbd5e1;border:1px solid #334155;padding:2px 6px;border-radius:6px;font-size:12px}
+    .progress{height:10px;background:#0e1628;border:1px solid rgba(147,197,253,.25);border-radius:999px;overflow:hidden}
+    .progress > i{display:block;height:100%;background:linear-gradient(90deg, #93c5fd, #6ee7b7);transition:width 0.3s ease}
+    .muted{color:var(--muted)}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+    textarea {
+        width: 100%;
+        padding: 12px;
+        margin-top: 8px;
+        background-color: #1e293b;
+        color: white;
+        border: 1px solid rgba(147,197,253,.25);
+        border-radius: 8px;
+        resize: vertical;
+        min-height: 60px;
+        font-family: inherit;
+    }
+    textarea:focus{
+        outline:none;
+        border-color: var(--brand-2);
+        box-shadow: var(--ring);
+    }
+    label{
+        display:block;
+        margin:12px 0 4px;
+        font-weight:600;
+        color:var(--ink);
+    }
+    .plan-card {
+        background-color: #1e293b;
+        padding: 20px;
+        border-radius: 12px;
+        margin-top: 20px;
+        border: 1px solid rgba(147,197,253,.2);
+    }
+    .plan-card h3{
+        margin:0 0 12px;
+        color:var(--brand);
+    }
+    .plan-card p {
+        margin: 10px 0;
+        line-height: 1.5;
+    }
+    .plan-card strong{
+        color:var(--ink);
+    }
+    .plan-content{
+        color:var(--muted);
+        font-style: italic;
+    }
+    .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;padding:12px 16px;border-radius:12px;background:#111827;border:1px solid #334155;color:#e5e7eb;box-shadow:0 10px 30px rgba(0,0,0,.35);display:none;z-index:1000}
+    .toast.show{display:block;animation: slideUp 0.3s ease}
+    @keyframes slideUp{
+        from{transform:translateX(-50%) translateY(20px);opacity:0}
+        to{transform:translateX(-50%) translateY(0);opacity:1}
+    }
+    input[type="checkbox"]{
+        margin-right:8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="nav">
+      <span class="badge">You're Not Alone</span>
+      <span class="muted">Private • No tracking • Static</span>
+    </div>
+
+    <header class="hero" role="banner" aria-label="Immediate help">
+      <h1>In crisis right now?</h1>
+      <p class="sub">If you're in immediate danger, call emergency services or a mental health helpline below. Reaching out is brave.
+      </p>
+      <div class="btns" role="group" aria-label="Immediate action buttons">
+        <a class="btn primary" href="tel:112"><span>Call Emergency (India)</span><span aria-hidden>🇮🇳 112</span></a>
+        <a class="btn alt" href="tel:14416"><span>Tele-MANAS (24×7)</span><span aria-hidden>14416</span></a>
+        <a class="btn alt" href="tel:+18008914416"><span>Tele-MANAS Alt</span><span aria-hidden>1800‑891‑4416</span></a>
+        <a class="btn alt" href="tel:+18005990019"><span>KIRAN Helpline</span><span aria-hidden>1800‑599‑0019</span></a>
+        <a class="btn ghost" href="#more-helps">See more helplines</a>
+      </div>
+    </header>
+
+    <section class="grid" aria-label="Main sections">
+      <article class="card" aria-labelledby="selfcheck-h2">
+        <h2 id="selfcheck-h2">Two-minute self‑check</h2>
+        <p class="muted">Answer honestly. Your answers stay in your browser.</p>
+        <div class="row">
+          <div class="card" style="background:#0e1628">
+            <label><input type="checkbox" id="q1"> I have a plan and the means with me now.</label><br>
+            <label><input type="checkbox" id="q2"> I feel unsafe to be alone.</label><br>
+            <label><input type="checkbox" id="q3"> I can't see any reason to live today.</label><br>
+            <label><input type="checkbox" id="q4"> I've used before or tried to hurt myself.</label><br>
+            <label><input type="checkbox" id="q5"> I'm under the influence (alcohol/drugs) now.</label>
+            <div style="margin-top:16px" class="progress" aria-label="Risk indicator"><i id="bar" style="width:0%"></i></div>
+            <p id="advice" class="muted" style="margin:12px 0 0">Select what applies above.</p>
+            <div class="btns" style="margin-top:12px">
+              <button class="btn warn" id="clear">Clear</button>
+              <a class="btn ghost" href="#plan">Make a 24‑hr Safety Plan</a>
+            </div>
+          </div>
+          <div class="card" style="background:#0e1628">
+            <h3 style="margin:0 0 12px">Quick grounding (5‑4‑3‑2‑1)</h3>
+            <ol class="list">
+              <li><strong>5</strong> things you can see — say them out loud.</li>
+              <li><strong>4</strong> things you can feel — your clothes, chair, ground.</li>
+              <li><strong>3</strong> things you can hear — near or far.</li>
+              <li><strong>2</strong> things you can smell — or two slow breaths.</li>
+              <li><strong>1</strong> thing you can taste — or a sip of water.</li>
+            </ol>
+            <p class="muted">If thoughts spike again, repeat. You can also splash water on your face, or step outside for fresh air.</p>
+          </div>
+        </div>
+      </article>
+
+      <aside class="card" id="more-helps" aria-labelledby="helps-h2">
+        <h2 id="helps-h2">Helplines & resources</h2>
+        <div class="helplist">
+          <div class="hl"><div>
+            <strong>Tele‑MANAS (India, 24×7)</strong><br>
+            <small>Dial <span class="kbd">14416</span> or <span class="kbd">1800‑891‑4416</span></small>
+          </div><a class="btn ghost" href="tel:14416">Call</a></div>
+
+          <div class="hl"><div>
+            <strong>KIRAN — Mental Health Rehabilitation</strong><br>
+            <small>Dial <span class="kbd">1800‑599‑0019</span> (24×7)</small>
+          </div><a class="btn ghost" href="tel:+18005990019">Call</a></div>
+
+          <div class="hl"><div>
+            <strong>AASRA (India)</strong><br>
+            <small>Confidential emotional support</small>
+          </div><a class="btn ghost" href="https://www.aasra.info/" target="_blank" rel="noopener">Open</a></div>
+
+          <div class="hl"><div>
+            <strong>Find A Helpline (Global)</strong><br>
+            <small>Auto-locates verified services worldwide</small>
+          </div><a class="btn ghost" href="https://findahelpline.com/" target="_blank" rel="noopener">Open</a></div>
+
+          <div class="hl"><div>
+            <strong>Befrienders Worldwide</strong><br>
+            <small>International network of listening centres</small>
+          </div><a class="btn ghost" href="https://befrienders.org/" target="_blank" rel="noopener">Open</a></div>
+        </div>
+        <p class="muted" style="margin-top:12px">If one number is busy, try another. If you or someone is in immediate danger, call <span class="kbd">112</span>.</p>
+      </aside>
+    </section>
+
+    <section class="card" id="plan" aria-labelledby="plan-h2" style="margin-top:16px">
+      <h2 id="plan-h2">Your 24-hour safety plan</h2>
+      <p class="muted">Write this somewhere you can see. Share with one trusted person.</p>
+
+      <label for="reasons">1) My reasons to stay</label>
+      <textarea id="reasons" placeholder="Family, friends, goals, things you enjoy..."></textarea>
+
+      <label for="contacts">2) People I can contact now</label>
+      <textarea id="contacts" placeholder="Name, phone numbers, trusted friends or family..."></textarea>
+
+      <label for="places">3) Places that feel safer</label>
+      <textarea id="places" placeholder="Friend's house, library, coffee shop, hospital..."></textarea>
+
+      <div class="btns" style="margin-top:16px">
+        <button class="btn primary" onclick="savePlan()">💾 Save on this device</button>
+        <button class="btn ghost" onclick="clearPlan()">Clear</button>
+        <button class="btn ghost" onclick="window.print()" style="display:none" id="printBtn">🖨 Print plan</button>
+      </div>
+
+      <div id="savedPlan" class="plan-card" style="display:none;">
+        <h3>📄 My Saved Plan</h3>
+        <p><strong>Reasons to stay:</strong><br><span id="viewReasons" class="plan-content"></span></p>
+        <p><strong>People I can contact:</strong><br><span id="viewContacts" class="plan-content"></span></p>
+        <p><strong>Places that feel safer:</strong><br><span id="viewPlaces" class="plan-content"></span></p>
+        <div class="btns" style="margin-top:12px">
+          <button class="btn ghost" onclick="window.print()">🖨 Print this plan</button>
+          <button class="btn ghost" onclick="editPlan()">✏️ Edit</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="facts-h2" style="margin-top:16px">
+      <h2 id="facts-h2">Facts & gentle reminders</h2>
+      <ul class="list">
+        <li>Suicidal crises often peak and pass within minutes to hours — staying safe now saves futures you can't see yet.</li>
+        <li>Most people who survive an attempt do <em>not</em> go on to die by suicide.</li>
+        <li>Your pain is real, and help works best when shared. You are not a burden.</li>
+        <li>Every crisis is temporary, even when it doesn't feel that way.</li>
+        <li>Professional counselors are trained to help with these exact feelings.</li>
+      </ul>
+    </section>
+
+    <p class="footer">Medical disclaimer: This site does not replace professional care. If you're in immediate danger, call <span class="kbd">112</span>. Helpline details are provided in good faith; numbers may change.
+    </p>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    // =========================
+    // UI TOAST
+    // =========================
+    const toastEl = document.getElementById('toast');
+    function toast(msg){
+      if(!toastEl) return;
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      setTimeout(()=> toastEl.classList.remove('show'), 3000);
+    }
+
+    // =========================
+    // SELF‑CHECK LOGIC
+    // =========================
+    const boxes = ["q1","q2","q3","q4","q5"].map(id=>document.getElementById(id));
+    const bar = document.getElementById('bar');
+    const advice = document.getElementById('advice');
+    const clearBtn = document.getElementById('clear');
+
+    function updateSelfCheck(){
+      const score = boxes.reduce((n,b)=> n + (b.checked?1:0), 0);
+      const pct = (score/boxes.length)*100;
+      bar.style.width = pct + '%';
+      
+      let msg = 'Select what applies above.';
+      if(score>=3){
+        msg = 'High risk. Call a helpline now or go where people are. If you have means with you, put space between you and them.';
+      } else if(score==2){
+        msg = 'Moderate risk. Do the grounding exercise and make the safety plan. Reach out to someone you trust.';
+      } else if(score==1){
+        msg = 'You\'re not alone. Keep this page open and talk to someone you trust today.';
+      }
+      advice.textContent = msg;
+    }
+
+    boxes.forEach(b=> b.addEventListener('change', updateSelfCheck));
+    if(clearBtn){ 
+      clearBtn.addEventListener('click', ()=>{ 
+        boxes.forEach(b=> b.checked=false); 
+        updateSelfCheck();
+        toast('Self-check cleared');
+      }); 
+    }
+    updateSelfCheck();
+
+    // =========================
+    // SAFETY PLAN LOGIC
+    // =========================
+    function savePlan(){
+      const reasons = document.getElementById('reasons').value.trim();
+      const contacts = document.getElementById('contacts').value.trim();
+      const places = document.getElementById('places').value.trim();
+
+      if(!reasons && !contacts && !places){
+        toast('Please fill in at least one section');
+        return;
+      }
+
+      try{
+        const planData = { reasons, contacts, places, saved: new Date().toISOString() };
+        localStorage.setItem('safetyPlan', JSON.stringify(planData));
+        toast('✅ Plan saved safely on this device');
+        displaySavedPlan();
+      } catch(e) {
+        toast('Unable to save (private browsing mode?)');
+      }
+    }
+
+    function loadPlan(){
+      try{
+        const raw = localStorage.getItem('safetyPlan');
+        if(raw){ 
+          const planData = JSON.parse(raw);
+          document.getElementById('reasons').value = planData.reasons || '';
+          document.getElementById('contacts').value = planData.contacts || '';
+          document.getElementById('places').value = planData.places || '';
+          displaySavedPlan();
+        }
+      }catch(e){ 
+        console.log('No saved plan found');
+      }
+    }
+
+    function displaySavedPlan(){
+      const raw = localStorage.getItem('safetyPlan');
+      if(!raw) return;
+
+      const planData = JSON.parse(raw);
+      const hasContent = planData.reasons || planData.contacts || planData.places;
+      
+      if(hasContent){
+        document.getElementById('viewReasons').textContent = planData.reasons || 'Not specified';
+        document.getElementById('viewContacts').textContent = planData.contacts || 'Not specified';
+        document.getElementById('viewPlaces').textContent = planData.places || 'Not specified';
+        document.getElementById('savedPlan').style.display = 'block';
+        document.getElementById('printBtn').style.display = 'inline-flex';
+      } else {
+        document.getElementById('savedPlan').style.display = 'none';
+        document.getElementById('printBtn').style.display = 'none';
+      }
+    }
+
+    function clearPlan(){
+      if(confirm('Are you sure you want to clear your saved safety plan?')){
+        localStorage.removeItem('safetyPlan');
+        document.getElementById('reasons').value = '';
+        document.getElementById('contacts').value = '';
+        document.getElementById('places').value = '';
+        document.getElementById('savedPlan').style.display = 'none';
+        document.getElementById('printBtn').style.display = 'none';
+        toast('Safety plan cleared');
+      }
+    }
+
+    function editPlan(){
+      // Scroll to the form
+      document.getElementById('plan').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('reasons').focus();
+    }
+
+    // Initialize on page load
+    window.addEventListener('load', loadPlan);
+
+    // Auto-save as user types (debounced)
+    let autoSaveTimeout;
+    function autoSave(){
+      clearTimeout(autoSaveTimeout);
+      autoSaveTimeout = setTimeout(()=>{
+        const reasons = document.getElementById('reasons').value;
+        const contacts = document.getElementById('contacts').value;
+        const places = document.getElementById('places').value;
+        
+        if(reasons || contacts || places){
+          try{
+            const planData = { reasons, contacts, places, saved: new Date().toISOString() };
+            localStorage.setItem('safetyPlan', JSON.stringify(planData));
+            displaySavedPlan();
+          } catch(e) {
+            // Silent fail for auto-save
+          }
+        }
+      }, 2000);
+    }
+
+    document.getElementById('reasons').addEventListener('input', autoSave);
+    document.getElementById('contacts').addEventListener('input', autoSave);
+    document.getElementById('places').addEventListener('input', autoSave);
+
+    // Print styles
+    const printStyles = `
+      @media print {
+        body { background: white !important; color: black !important; }
+        .nav, .btns, button, .footer { display: none !important; }
+        .card, .hero { border: 1px solid #ccc !important; background: white !important; }
+        .plan-card { page-break-inside: avoid; }
+        h1, h2, h3 { color: black !important; }
+        .plan-content { color: black !important; font-style: normal !important; }
+      }
+    `;
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = printStyles;
+    document.head.appendChild(styleSheet);
+
+  </script>
+</body>
+</html>
