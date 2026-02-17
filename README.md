@@ -1,4 +1,4 @@
-# You Are Not Alone ❤️
+# You Are Not Alone 
 
 ## Overview
 **You Are Not Alone** is a simple yet powerful web application designed to help individuals create a personal **Suicide Prevention Safety Plan**.  
@@ -8,7 +8,7 @@ It aims to provide quick access to coping strategies, supportive contacts, and r
 
 ---
 
-## ✨ Features
+##  Features
 - **Create a Safety Plan** — Document warning signs, self-care actions, and emergency contacts.
 - **LocalStorage Privacy** — All data is saved only in your browser; no internet or server storage.
 - **Instant Access** — View your plan at any time, even offline.
@@ -17,14 +17,14 @@ It aims to provide quick access to coping strategies, supportive contacts, and r
 
 ---
 
-## 🛠 Tech Stack
+##  Tech Stack
 - **HTML** — Structure of the app
 - **CSS** — Styling for a calm, clean UI
 - **JavaScript** — Logic and LocalStorage handling
 
 ---
 
-## 🚀 Installation & Setup
+##  Installation & Setup
 
 ### Option 1 — Run Locally
 1. **Clone the repository**
